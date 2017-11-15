@@ -1,0 +1,3 @@
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/cmake-build-debug/CMakeFiles/project2_merve_ilik_2015400006_master.dir

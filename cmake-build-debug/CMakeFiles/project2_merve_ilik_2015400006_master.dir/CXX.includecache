@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/Barista.cpp
+Barista.h
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/Barista.h
+
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/Barista.h
+
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/Cashier.cpp
+Cashier.h
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/Cashier.h
+
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/Cashier.h
+
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/Order.cpp
+Order.h
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/Order.h
+
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/Order.h
+
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/main.cpp
+vector
+-
+queue
+-
+iostream
+-
+fstream
+-
+Order.h
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/Order.h
+Cashier.h
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/Cashier.h
+Barista.h
+/Users/merveilik/CLionProjects/project2-merve-ilik-2015400006/Barista.h
+
