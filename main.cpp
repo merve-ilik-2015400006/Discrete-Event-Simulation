@@ -18,11 +18,12 @@ void read(char* input,int &n,int &m,vector<Order> &orders){
     infile>>n>>m;
     Order o;
     for(int i=0; i<m; i++){
+        setprecision(100);
         infile>>o.arrivalTime;
         infile>>o.orderTime;
         infile>>o.brewTime;
         infile>>o.price;
-        o.arrivalTime=o.currentTime;
+        o.currentTime=o.arrivalTime;
         o.id=i;
         o.status=0;
         orders.push_back(o);
@@ -51,6 +52,12 @@ int main(int argc, char*argv[]){
 
         timeLine.push(orders[i]);
     }
+cout<<orders[4].arrivalTime<<endl;
+    cout<<orders[4].orderTime<<endl;
+    cout<<orders[4].brewTime<<endl;
+    cout<<orders[4].price<<endl;
+    cout<<orders[5].arrivalTime<<endl;
+
 
     while(!timeLine.empty()){
         int i;
@@ -184,7 +191,7 @@ int main(int argc, char*argv[]){
         myfile<<orders[x].currentTime-orders[x].arrivalTime<<endl;
     }
 
-
+cout<<""<<endl;
 
     vector<int> lengths;
     vector<Barista> baristas2;
@@ -194,10 +201,11 @@ int main(int argc, char*argv[]){
     cashiers2.resize(n);
     priority_queue<Order,vector<Order>,compareArrivalTime> cq2;
     priority_queue<Order,vector<Order>,compareTime> timeLine2;
-    for(int i=0;i<m;i++){
 
+    for(int i=0;i<m;i++){
         timeLine2.push(orders2[i]);
     }
+
     int maxCqLength2=0;
     int maxBqLength2=0;
     double totalRunningTime2;
