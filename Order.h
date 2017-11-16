@@ -11,6 +11,12 @@ public:
     double orderTime;
     double brewTime;
     double price;
+    /*0, process not started
+      1, at cashier q
+      2 at cashier
+      3 at barista q
+      4 at barista
+      5 is done     */
     int status;
     double currentTime;
     int id;

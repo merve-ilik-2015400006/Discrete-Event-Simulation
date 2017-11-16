@@ -5,11 +5,16 @@
 #ifndef PROJECT2_MERVE_ILIK_2015400006_BARISTA_H
 #define PROJECT2_MERVE_ILIK_2015400006_BARISTA_H
 using namespace std;
+
+#include "Order.h"
+#include <vector>
+#include <queue>
 class Barista{
 public:
     double busyTime;
     bool available;
     int orderID;
+    priority_queue<Order,vector<Order>,comparePrice> bq;
     Barista();
 };
 #endif //PROJECT2_MERVE_ILIK_2015400006_BARISTA_H
