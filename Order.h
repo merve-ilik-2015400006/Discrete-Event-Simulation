@@ -27,14 +27,14 @@ public:
 struct comparePrice{
 public:
     bool operator()(Order const &o1, Order const &o2){
-        return o1.price>o2.price;
+        return o1.price<o2.price;
     }
      };
 
 struct compareArrivalTime{
 public:
     bool operator()(Order const &o1, Order const &o2){
-        return o1.arrivalTime>o2.arrivalTime;
+        return o1.arrivalTime<o2.arrivalTime;
     }
 };
 
