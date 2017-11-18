@@ -16,5 +16,6 @@ public:
     int orderID;
     priority_queue<Order,vector<Order>,comparePrice> bq;
     Barista();
+    vector<int> lengths;
 };
 #endif //PROJECT2_MERVE_ILIK_2015400006_BARISTA_H

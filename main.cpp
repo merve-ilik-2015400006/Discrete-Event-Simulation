@@ -31,7 +31,6 @@ void read(char* input,int &n,int &m,vector<Order> &orders){
 
 int main(int argc, char*argv[]){
 
-
     vector<Order> orders;
     vector<Cashier> cashiers;
     vector<Barista> baristas;
@@ -184,29 +183,28 @@ int main(int argc, char*argv[]){
         myfile<<orders[x].currentTime-orders[x].arrivalTime<<endl;
     }
 
-cout<<""<<endl;
+myfile<<" "<<endl;
 
-   /* vector<int> lengths;
+
     vector<Barista> baristas2;
     baristas2.resize(n/3);
     vector<Order> orders2;
     vector<Cashier> cashiers2;
     cashiers2.resize(n);
-    priority_queue<Order,vector<Order>,compareArrivalTime> cq2;
+    read(argv[1],n,m,orders2);
+
+    priority_queue<Order,vector<Order>,compareTime> cq2;
     priority_queue<Order,vector<Order>,compareTime> timeLine2;
 
     for(int i=0;i<m;i++){
-        return  0;
 
         timeLine2.push(orders2[i]);
     }
-    return 0;
 
     int maxCqLength2=0;
     int maxBqLength2=0;
     double totalRunningTime2;
     while(!timeLine2.empty()){
-        return  0;
 
         int i;
         for(i=0;i<m;i++){
@@ -215,7 +213,6 @@ cout<<""<<endl;
             if(o.status==0){
                 int a;
                 bool isAvailable=false;
-                return  0;
                 for(a=0;a<n;a++){
                     if(cashiers2[a].available){
                         isAvailable=true;
@@ -241,22 +238,20 @@ cout<<""<<endl;
                 }
             }
             else if(o.status==2){
-                Cashier currentCashier;
                 int c;
                 int cashierLocation;
                 for(c=0;c<n;c++){
                     if(cashiers2[c].orderID==o.id){
-                        currentCashier=cashiers2[c];
                         cashierLocation=c;
                     }
                 }
-                currentCashier.available= true;
+                cashiers2[cashierLocation].available= true;
                 if(!cq2.empty()){
                     Order ox=cq2.top();
                     cq2.pop();
-                    currentCashier.orderID=ox.id;
-                    currentCashier.available=false;
-                    currentCashier.busyTime+=ox.orderTime;
+                    cashiers2[cashierLocation].orderID=ox.id;
+                    cashiers2[cashierLocation].available=false;
+                    cashiers2[cashierLocation].busyTime+=ox.orderTime;
                     ox.status=2;
                     ox.currentTime=max(o.currentTime,ox.currentTime)+ox.orderTime;
                     timeLine2.push(ox);
@@ -289,28 +284,26 @@ cout<<""<<endl;
                 if(!isAvailable){
                     o.status=3;
                     baristas2[cashierLocation/3].bq.push(o);
-                    lengths.push_back(baristas2[cashierLocation/3].bq.size());
+                    baristas2[cashierLocation/3].lengths.push_back(baristas2[cashierLocation/3].bq.size());
 
                 }
             }
             else if(o.status==4){
-                Barista currentBarista;
                 int baristaLocation;
                 for(int b=0;b<n/3;b++){
                     if(baristas2[b].orderID==o.id){
-                        currentBarista=baristas2[b];
                         baristaLocation=b;
                     }
                 }
                if(!baristas2[baristaLocation].bq.empty()){
                     Order ox=baristas2[baristaLocation].bq.top();
                     baristas2[baristaLocation].bq.pop();
-                    currentBarista.orderID=ox.id;
-                    currentBarista.available=false;
-                    currentBarista.busyTime+=ox.brewTime;
+                    baristas2[baristaLocation].orderID=ox.id;
+                    baristas2[baristaLocation].available=false;
+                    baristas2[baristaLocation].busyTime+=ox.brewTime;
                     ox.status=4;
                     ox.currentTime=max(o.currentTime,ox.currentTime)+ox.brewTime;
-                    timeLine.push(ox);
+                    timeLine2.push(ox);
                     for(int j=0;j<m;j++){
                         if(orders2[j].id==ox.id){
                             orders2[j]=ox;
@@ -323,12 +316,19 @@ cout<<""<<endl;
         }
     }
 
-    myfile<< totalRunningTime2;
+    myfile<< fixed<<setprecision(2)<<totalRunningTime2;
     myfile<<endl;
     myfile<< maxCqLength2;
     myfile<<endl;
-    myfile<< maxBqLength2;
-    myfile<<endl;
+
+    for(int i=0;i<n/3;i++){
+        int max=0;
+        for (vector<int>::iterator it =baristas2[i].lengths.begin();it!=baristas2[i].lengths.end();++it){
+            if(*it>max)
+                max=*it;
+        }
+        myfile<<max<<endl;
+    }
     for(int x=0;x<n;x++){
         myfile<<cashiers2[x].busyTime/totalRunningTime2<<endl;
     }
@@ -337,36 +337,6 @@ cout<<""<<endl;
     }
     for(int x=0;x<m;x++){
         myfile<<orders2[x].currentTime-orders2[x].arrivalTime<<endl;
-    }*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
     return 0;
 }
