@@ -7,6 +7,6 @@
 Cashier::Cashier(){
     available=true;
     busyTime=0;
-    orderID=-1;
+    orderNo=-1;
 }
 
