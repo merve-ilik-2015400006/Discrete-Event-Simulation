@@ -6,7 +6,7 @@
 Barista::Barista(){
     busyTime=0;
     available=true;
-    orderID=-1;
+    orderNo=-1;
 }
 
 
