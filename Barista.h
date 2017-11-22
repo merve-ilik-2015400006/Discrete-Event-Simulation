@@ -13,7 +13,7 @@ class Barista{
 public:
     double busyTime;
     bool available;
-    int orderID;
+    int orderNo;
     priority_queue<Order,vector<Order>,comparePrice> bq;
     Barista();
     vector<int> lengths;

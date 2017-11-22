@@ -24,10 +24,6 @@ Cashier.h
 
 /home/student/ClionProjects/project2-merve-ilik-2015400006/Cashier.h
 
-/home/student/ClionProjects/project2-merve-ilik-2015400006/Order.cpp
-Order.h
-/home/student/ClionProjects/project2-merve-ilik-2015400006/Order.h
-
 /home/student/ClionProjects/project2-merve-ilik-2015400006/Order.h
 
 /home/student/ClionProjects/project2-merve-ilik-2015400006/main.cpp
@@ -45,12 +41,10 @@ Cashier.h
 /home/student/ClionProjects/project2-merve-ilik-2015400006/Cashier.h
 Barista.h
 /home/student/ClionProjects/project2-merve-ilik-2015400006/Barista.h
-algorithm
--
 iomanip
 -
 iterator
 -
-sstream
+algorithm
 -
 

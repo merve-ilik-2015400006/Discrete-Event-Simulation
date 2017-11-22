@@ -4,7 +4,7 @@
 
 #ifndef PROJECT2_MERVE_ILIK_2015400006_ORDER_H
 #define PROJECT2_MERVE_ILIK_2015400006_ORDER_H
-using namespace std;
+
 class Order{
 public:
     double arrivalTime;
@@ -19,7 +19,7 @@ public:
       5 is done     */
     int status;
     double currentTime;
-    int id;
+    int number;
     Order();
 
 };

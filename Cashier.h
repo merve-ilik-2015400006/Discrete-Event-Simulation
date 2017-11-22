@@ -4,13 +4,12 @@
 
 #ifndef PROJECT2_MERVE_ILIK_2015400006_CASHIER_H
 #define PROJECT2_MERVE_ILIK_2015400006_CASHIER_H
-using namespace std;
 
 class Cashier{
 public:
 double busyTime;
 bool available;
-int orderID;
+int orderNo;
     Cashier();
 
 };

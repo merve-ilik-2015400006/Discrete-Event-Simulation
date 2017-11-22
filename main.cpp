@@ -1,4 +1,3 @@
-
 #include <vector>
 #include <queue>
 #include <iostream>
@@ -6,13 +5,11 @@
 #include "Order.h"
 #include "Cashier.h"
 #include "Barista.h"
-#include <algorithm>
 #include <iomanip>
 #include <iterator>
-#include <sstream>
-
+#include <algorithm>
 using namespace std;
-
+//gets the input from the given file and initializes the data to the orders vector
 void read(char* input,int &n,int &m,vector<Order> &orders){
     ifstream infile(input);
     infile>>n>>m;
@@ -23,24 +20,25 @@ void read(char* input,int &n,int &m,vector<Order> &orders){
         infile>>o.brewTime;
         infile>>o.price;
         o.currentTime=o.arrivalTime;
-        o.id=i;
+        o.number=i;
         o.status=0;
         orders.push_back(o);
     }
 }
-//merveee
+
 int main(int argc, char*argv[]){
 
     vector<Order> orders;
     vector<Cashier> cashiers;
     vector<Barista> baristas;
-    priority_queue<Order,vector<Order>,compareTime> cq;
-    priority_queue<Order,vector<Order>,comparePrice> bq;
-    priority_queue<Order,vector<Order>,compareTime> timeLine;
-    int n,m;
+    priority_queue<Order,vector<Order>,compareTime> cq;  //we sort orders according to their current time
+    priority_queue<Order,vector<Order>,comparePrice> bq; //we sort orders according to their price
+    priority_queue<Order,vector<Order>,compareTime> timeLine; //we sort orders according to their operation turn
+    int n; //number of cashiers
+    int m; //number of orders
     int maxCqLength=0;
     int maxBqLength=0;
-    double totalRunningTime=0;
+    double totalRunningTime=0; //time when the last order leaves the coffee shop
     read(argv[1],n,m,orders);
 
     cashiers.resize(n);
@@ -48,7 +46,7 @@ int main(int argc, char*argv[]){
 
     for(int i=0;i<m;i++){
 
-        timeLine.push(orders[i]);
+        timeLine.push(orders[i]); //pushing all orders to timeLine
     }
 
 
@@ -59,108 +57,107 @@ int main(int argc, char*argv[]){
             Order o=timeLine.top();
             timeLine.pop();
 
-            if(o.status==0){
+            if(o.status==0){ //if order is just arrived to coffee shop
                 int a;
                 bool isAvailable=false;
                 for(a=0;a<n;a++){
-                    if(cashiers[a].available){
+                    if(cashiers[a].available){ //searching for an available cashier
                         isAvailable=true;
                         cashiers[a].busyTime+=o.orderTime;
                         cashiers[a].available=false;
                         o.currentTime+=o.orderTime;
-                        cashiers[a].orderID=o.id;
-                        o.status=2;
+                        cashiers[a].orderNo=o.number;
+                        o.status=2;  //now order is at a cashier
                         timeLine.push(o);
                         for(int j=0;j<m;j++){
-                            if(orders[j].id==o.id){
-                                orders[j]=o;
+                            if(orders[j].number==o.number){
+                                orders[j]=o;     //updating order's info at the vector
                             }
                         }
                         break;
                     }
                 }
-                if(!isAvailable){
+                if(!isAvailable){ //if there is no available cashier order will wait in cq
                     o.status=1;
                     cq.push(o);
-                    if(cq.size()>maxCqLength)
+                    if(cq.size()>maxCqLength) //if new cq's length is bigger than previous it is the new maxCqLength
                         maxCqLength=cq.size();
                 }
             }
-            else if(o.status==2){
+            else if(o.status==2){  //if order is at cashier
                 int currentCashier;
                 int c;
                 for(c=0;c<n;c++){
-                    if(cashiers[c].orderID==o.id)
+                    if(cashiers[c].orderNo==o.number) //finding which cashier it is at
                         currentCashier=c;
                 }
-                cashiers[currentCashier].available= true;
-                if(!cq.empty()){
+                cashiers[currentCashier].available= true; //that cashier is done with that order and goes available
+                if(!cq.empty()){                          //for the next order if it exists
                     Order ox=cq.top();
                     cq.pop();
-                    cashiers[currentCashier].orderID=ox.id;
+                    cashiers[currentCashier].orderNo=ox.number;
                     cashiers[currentCashier].available=false;
                     cashiers[currentCashier].busyTime+=ox.orderTime;
                     ox.status=2;
                     ox.currentTime=max(o.currentTime,ox.currentTime)+ox.orderTime;
                     timeLine.push(ox);
                     for(int j=0;j<m;j++){
-                        if(orders[j].id==ox.id){
-                            orders[j]=ox;
+                        if(orders[j].number==ox.number){
+                            orders[j]=ox;      //updating order's info at the vector
                         }
                     }
                 }
                 int b;
                 bool isAvailable=false;
                 for(b=0;b<n/3;b++){
-                    if(baristas[b].available){
+                    if(baristas[b].available){ //searching for an available barista
                         isAvailable=true;
-                        baristas[b].orderID=o.id;
+                        baristas[b].orderNo=o.number;
                         baristas[b].available=false;
                         baristas[b].busyTime+=o.brewTime;
                         o.currentTime+=o.brewTime;
-                        o.status=4;
+                        o.status=4;   //now order is at a barista
                         timeLine.push(o);
                         for(int j=0;j<m;j++){
-                            if(orders[j].id==o.id){
-                                orders[j]=o;
+                            if(orders[j].number==o.number){
+                                orders[j]=o;   //updating order's info at the vector
                             }
                         }
                         break;
                     }
                 }
-                if(!isAvailable){
-                    o.status=3;
+                if(!isAvailable){ //no available barista
+                    o.status=3;   //now order is at barista queue
                     bq.push(o);
                     if(bq.size()>maxBqLength)
-                        maxBqLength=bq.size();
-
+                        maxBqLength=bq.size(); //if new bq's length is bigger than previous it is the new maxBqLength
                 }
             }
-            else if(o.status==4){
+            else if(o.status==4){  //if order is at barista
                 int currentBarista;
                 for(int b=0;b<n/3;b++){
-                    if(baristas[b].orderID==o.id){
+                    if(baristas[b].orderNo==o.number){ //finding which barista it is at
                         currentBarista=b;
 
                     }
                 }
-                baristas[currentBarista].available=true;
-                if(!bq.empty()){
+                baristas[currentBarista].available=true; //this barista is available for the orders at bq
+                if(!bq.empty()){     //if there exist an orders at bq
                     Order ox=bq.top();
                     bq.pop();
-                    baristas[currentBarista].orderID=ox.id;
+                    baristas[currentBarista].orderNo=ox.number;
                     baristas[currentBarista].available=false;
                     baristas[currentBarista].busyTime+=ox.brewTime;
-                    ox.status=4;
+                    ox.status=4; //now it is at a barista
                     ox.currentTime=max(o.currentTime,ox.currentTime)+ox.brewTime;
                     timeLine.push(ox);
                     for(int j=0;j<m;j++){
-                        if(orders[j].id==ox.id){
-                            orders[j]=ox;
+                        if(orders[j].number==ox.number){
+                            orders[j]=ox;    //updating order's info at the vector
                         }
                     }
                 }
-                o.status=5;
+                o.status=5; //process completed
                 totalRunningTime=o.currentTime;
             }
         }
@@ -180,12 +177,12 @@ int main(int argc, char*argv[]){
         myfile<<baristas[x].busyTime/totalRunningTime<<endl;
     }
     for(int x=0;x<m;x++){
-        myfile<<orders[x].currentTime-orders[x].arrivalTime<<endl;
+        myfile<<orders[x].currentTime-orders[x].arrivalTime<<endl; //prints utilization time of orders
     }
 
-myfile<<" "<<endl;
+    myfile<<" "<<endl;
 
-
+    //model 2 starts here
     vector<Barista> baristas2;
     baristas2.resize(n/3);
     vector<Order> orders2;
@@ -202,7 +199,6 @@ myfile<<" "<<endl;
     }
 
     int maxCqLength2=0;
-    int maxBqLength2=0;
     double totalRunningTime2;
     while(!timeLine2.empty()){
 
@@ -219,11 +215,11 @@ myfile<<" "<<endl;
                         cashiers2[a].busyTime+=o.orderTime;
                         cashiers2[a].available=false;
                         o.currentTime+=o.orderTime;
-                        cashiers2[a].orderID=o.id;
+                        cashiers2[a].orderNo=o.number;
                         o.status=2;
                         timeLine2.push(o);
                         for(int j=0;j<m;j++){
-                            if(orders2[j].id==o.id){
+                            if(orders2[j].number==o.number){
                                 orders2[j]=o;
                             }
                         }
@@ -241,7 +237,7 @@ myfile<<" "<<endl;
                 int c;
                 int cashierLocation;
                 for(c=0;c<n;c++){
-                    if(cashiers2[c].orderID==o.id){
+                    if(cashiers2[c].orderNo==o.number){
                         cashierLocation=c;
                     }
                 }
@@ -249,14 +245,14 @@ myfile<<" "<<endl;
                 if(!cq2.empty()){
                     Order ox=cq2.top();
                     cq2.pop();
-                    cashiers2[cashierLocation].orderID=ox.id;
+                    cashiers2[cashierLocation].orderNo=ox.number;
                     cashiers2[cashierLocation].available=false;
                     cashiers2[cashierLocation].busyTime+=ox.orderTime;
                     ox.status=2;
                     ox.currentTime=max(o.currentTime,ox.currentTime)+ox.orderTime;
                     timeLine2.push(ox);
                     for(int j=0;j<m;j++){
-                        if(orders2[j].id==ox.id){
+                        if(orders2[j].number==ox.number){
                             orders2[j]=ox;
                         }
                     }
@@ -265,16 +261,16 @@ myfile<<" "<<endl;
                 bool isAvailable=false;
 
                 for(b=0;b<n/3;b++){
-                    if(baristas2[b].available && b==cashierLocation/3){
+                    if(baristas2[b].available && b==cashierLocation/3){ //each cashier will have a specific barista
                         isAvailable=true;
-                        baristas2[b].orderID=o.id;
+                        baristas2[b].orderNo=o.number;
                         baristas2[b].available=false;
                         baristas2[b].busyTime+=o.brewTime;
                         o.currentTime+=o.brewTime;
                         o.status=4;
                         timeLine2.push(o);
                         for(int j=0;j<m;j++){
-                            if(orders2[j].id==o.id){
+                            if(orders2[j].number==o.number){
                                 orders2[j]=o;
                             }
                         }
@@ -291,21 +287,21 @@ myfile<<" "<<endl;
             else if(o.status==4){
                 int baristaLocation;
                 for(int b=0;b<n/3;b++){
-                    if(baristas2[b].orderID==o.id){
+                    if(baristas2[b].orderNo==o.number){
                         baristaLocation=b;
                     }
                 }
-               if(!baristas2[baristaLocation].bq.empty()){
+                if(!baristas2[baristaLocation].bq.empty()){
                     Order ox=baristas2[baristaLocation].bq.top();
                     baristas2[baristaLocation].bq.pop();
-                    baristas2[baristaLocation].orderID=ox.id;
+                    baristas2[baristaLocation].orderNo=ox.number;
                     baristas2[baristaLocation].available=false;
                     baristas2[baristaLocation].busyTime+=ox.brewTime;
                     ox.status=4;
                     ox.currentTime=max(o.currentTime,ox.currentTime)+ox.brewTime;
                     timeLine2.push(ox);
                     for(int j=0;j<m;j++){
-                        if(orders2[j].id==ox.id){
+                        if(orders2[j].number==ox.number){
                             orders2[j]=ox;
                         }
                     }
@@ -338,5 +334,6 @@ myfile<<" "<<endl;
     for(int x=0;x<m;x++){
         myfile<<orders2[x].currentTime-orders2[x].arrivalTime<<endl;
     }
+
     return 0;
 }
