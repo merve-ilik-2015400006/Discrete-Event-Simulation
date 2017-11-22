@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 2.8.12.2)
 project(project2_merve_ilik_2015400006_master)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -15,4 +15,4 @@ set(SOURCE_FILES
         Cashier.cpp
         )
 
-add_executable(project2_merve_ilik_2015400006_master ${SOURCE_FILES})
+add_executable(project2 ${SOURCE_FILES})
