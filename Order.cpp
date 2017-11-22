@@ -11,6 +11,6 @@ Order::Order(){
     price=0;
     status=1;
     currentTime=arrivalTime;
-    id=-1;
+    number=-1;
 }
 
