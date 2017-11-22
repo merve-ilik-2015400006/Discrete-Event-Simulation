@@ -31,13 +31,6 @@ public:
     }
      };
 
-struct compareArrivalTime{
-public:
-    bool operator()(Order const &o1, Order const &o2){
-        return o1.arrivalTime<o2.arrivalTime;
-    }
-};
-
 struct compareTime{
 public:
     bool operator()(Order const &o1, Order const &o2){
